@@ -1,17 +1,20 @@
 package com.up42.demo.dal;
-import lombok.extern.slf4j.Slf4j;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.up42.demo.model.FeatureDTO;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.util.HashMap;
 
 
 public class JsonResourceUtils {
 
+
+    private static HashMap<String, FeatureDTO> map = new HashMap<>();
 
     public JsonResourceUtils() {
     }
@@ -24,7 +27,7 @@ public class JsonResourceUtils {
 
     public static JSONObject getJsonObjFromResource(String filename){
         JSONObject json = null;
-        JSONArray featureList = null;
+
 
         if (!filename.contains(".json")){
             filename += ".json";
@@ -41,7 +44,7 @@ public class JsonResourceUtils {
                     sb.append(content);
                 }
                 bfReader.close();
-                featureList = JSON.parseArray(sb.toString());
+                parseStringtoJson(sb.toString());
                 //json = JSON.parseObject(sb.toString());
             }else{
             }
@@ -49,16 +52,43 @@ public class JsonResourceUtils {
         }catch (Exception e){
         }
 
-        parseJsonArray((JSONObject) featureList.get(0),"features");
+
+
         return json;
     }
 
-    public static void parseJsonArray(JSONObject json,String arg){
+    public static void parseStringtoJson(String jsonString){
 
-        JSONArray jsonArray = (JSONArray)json.get(arg);
-        JSONObject feature = (JSONObject) jsonArray.get(0);
-        JSONObject properties = (JSONObject) feature.get("properties");
-        System.out.println(properties.get("id"));
+        JSONArray featureList = JSON.parseArray(jsonString);
+
+        for(int i = 0; i < featureList.size(); i++){
+
+            JSONArray jsonArray = parseJsonArray((JSONObject) featureList.get(i),"features");
+            JSONObject propertiesObject = parseJsonObject(jsonArray.getJSONObject(0),"properties");
+            JSONObject acquisitionObject = parseJsonObject(propertiesObject,"acquisition");
+
+            String id = (String) propertiesObject.get("id");
+            long timestamp = (long) propertiesObject.get("timestamp");
+            long beginViewingDate = (long) acquisitionObject.get("beginViewingDate");
+            long endViewingDate = (long) acquisitionObject.get("endViewingDate");
+            String missionName = (String) acquisitionObject.get("missionName");
+
+            map.put(id,new FeatureDTO(id,timestamp,beginViewingDate,endViewingDate,missionName));
+
+        }
+
+    }
+
+
+    public static JSONArray parseJsonArray(JSONObject json, String arg){
+
+        return (JSONArray)json.get(arg);
+
+    }
+
+    public static JSONObject parseJsonObject(JSONObject json, String arg){
+
+        return (JSONObject) json.get(arg);
 
     }
 }
