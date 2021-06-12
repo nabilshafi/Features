@@ -48,7 +48,6 @@ public class FeatureControllerTest {
     @Test
     public void testGetFeatures() {
 
-
         Mockito.when(jsonService.getFeatures()).thenReturn(featureList);
         HttpHeaders headers = new HttpHeaders();
         UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/features");
@@ -60,7 +59,6 @@ public class FeatureControllerTest {
     @Test
     public void testGetFeatureById() {
 
-
         Mockito.when(jsonService.getFeatureById(Mockito.anyString())).thenReturn(featureDTO);
         HttpHeaders headers = new HttpHeaders();
         UriComponentsBuilder builder = UriComponentsBuilder.fromPath("/features/3");
@@ -71,7 +69,6 @@ public class FeatureControllerTest {
 
     @Test
     public void testGetFeatureImage() {
-
 
         Mockito.when(jsonService.getImage(Mockito.anyString())).thenReturn(img);
         HttpHeaders headers = new HttpHeaders();

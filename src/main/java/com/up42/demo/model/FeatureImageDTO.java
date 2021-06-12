@@ -26,5 +26,4 @@ public class FeatureImageDTO {
         this.image = image;
     }
 
-
 }

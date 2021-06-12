@@ -39,7 +39,6 @@ public class FeatureController {
 
     }
 
-
     @GetMapping(value = "/features/{id}/quicklook", produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<byte[]> getFeatureImage(@PathVariable("id") String id)  {
 
