@@ -1,6 +1,6 @@
 package com.up42.demo.controller;
 
-import com.up42.demo.dal.JsonService;
+import com.up42.demo.service.JsonService;
 import com.up42.demo.model.FeatureDTO;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
